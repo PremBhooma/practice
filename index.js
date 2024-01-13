@@ -57,19 +57,20 @@ app.get("/product", async (req, res) => {
 });
 
 app.post('/product', async (req, res) => {
-    const { categoryname, productname, description, details } = req.body;
+    const { category, productname, description, details } = req.body;
 
-    const category = await CategoryModel.findOne({ categoryname });
+    const categoryModel = await CategoryModel.findOne({ categoryname: category });
+    console.log(categoryModel)
 
-    if (!category) {
+    if (!categoryModel) {
         return res.send({ message: "Category not found" });
     }
 
     const new_product = new ProductModel({
+        category,
         productname,
         description,
-        details,
-        category: category._id,
+        details
     });
 
     try {
